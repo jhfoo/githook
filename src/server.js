@@ -23,7 +23,9 @@ server.post('/', (req, res, next) => {
 		console.log('COMMIT received')
 		try {
 		let proc = spawn(process.cwd() + '/commit.sh',[], {
-		})
+			detached: true,
+			stdio: 'ignore'
+		}).unref()
 		proc.stdout.on('data', (data) => {
 			console.log(data.toString())
 		})
