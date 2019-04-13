@@ -1,0 +1,25 @@
+module.exports = {
+    apps : [{
+      name: "githook",
+      script: "./src/server.js",
+      env: {
+        NODE_ENV: "development",
+      },
+      env_production: {
+        NODE_ENV: "production",
+      }
+    }],
+    deploy: {
+        production: {
+            host: 'localhost',
+            ref: 'origin/master',
+            repo: 'https://github.com/jhfoo/githook.git',
+            path: '/home/jhfoo/prod/githook',
+            'pre-deploy-local': 'pm2 stop githook',
+            'post-deploy': 'npm install && pm2 startOrRestart ecosystem.config.js --env production',
+            env: {
+                NODE_ENV: 'production'
+            }
+        }
+    }
+  }
