@@ -15,7 +15,7 @@ module.exports = {
             ref: 'origin/master',
             repo: 'https://github.com/jhfoo/githook.git',
             path: '/home/jhfoo/prod/githook',
-            'pre-deploy-local': 'pm2 -s stop githook',
+            'pre-deploy-local': '',
             'post-deploy': 'npm install && pm2 startOrRestart ecosystem.config.js --env production',
             env: {
                 NODE_ENV: 'production'
