@@ -1,0 +1,25 @@
+{
+  "name": "githook",
+  "version": "1.0.0",
+  "description": "Lightweight webhook receiver for Git updates",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jhfoo/githook.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jhfoo/githook/issues"
+  },
+  "homepage": "https://github.com/jhfoo/githook#readme",
+  "devDependencies": {
+    "restify": "^8.3.0",
+    "restify-router": "^0.5.1",
+    "supervisor": "^0.12.0"
+  }
+}
