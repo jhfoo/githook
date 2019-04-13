@@ -16,7 +16,7 @@ module.exports = {
             repo: 'https://github.com/jhfoo/githook.git',
             path: '/home/jhfoo/prod/githook',
             'pre-deploy-local': '',
-            'post-deploy': 'npm install && pm2 startOrRestart ecosystem.config.js --env production',
+            'post-deploy': 'npm install && pm2 startOrRestart ecosystem.config.js --env production && chmod +x commit.sh',
             env: {
                 NODE_ENV: 'production'
             }
