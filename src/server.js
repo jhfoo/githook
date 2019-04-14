@@ -22,20 +22,20 @@ server.post('/', (req, res, next) => {
 	if (req.body.commits) {
 		console.log('COMMIT received')
 		try {
-		let proc = spawn(process.cwd() + '/../commit.sh',[], {
+		let proc = spawn(process.cwd() + '/commit.sh',[], {
 			detached: true,
 			stdio: 'ignore'
 		}).unref()
-		proc.stdout.on('data', (data) => {
-			console.log(data.toString())
-		})
-		proc.stderr.on('data', (data) => {
-			console.log('ERROR: ' + data.toString())
-		})
-		proc.on('close', (code) => {
-			console.log('Exited with code ' + code)
+		// proc.stdout.on('data', (data) => {
+		// 	console.log(data.toString())
+		// })
+		// proc.stderr.on('data', (data) => {
+		// 	console.log('ERROR: ' + data.toString())
+		// })
+		// proc.on('close', (code) => {
+		// 	console.log('Exited with code ' + code)
 
-		})
+		// })
 		proc.on('error', (err) => {
 			console.log('SPAWN EXCEPTION')
 			console.log(process.cwd())
