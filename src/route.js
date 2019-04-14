@@ -1,13 +1,15 @@
 const fs = require('fs'),
     path = require('path'),
-    {spawn} = require('child_process'),
+    {
+        spawn
+    } = require('child_process'),
     process = require('process'),
     Router = require('restify-router').Router,
     router = new Router()
 
 const EVENTTYPE_COMMIT = 'commit'
 
-const RequestFname = path.resolve('../data','hookrequest.json')
+const RequestFname = path.resolve('../data', 'hookrequest.json')
 console.log('RequestFname: %s', RequestFname)
 
 function parseJson(json) {
@@ -27,8 +29,8 @@ function parseJson(json) {
 }
 
 router.get('/', (req, res, next) => {
-    console.log ('GET /')
-    res.header('content-type','text/plain')
+    console.log('GET /')
+    res.header('content-type', 'text/plain')
     if (fs.existsSync(RequestFname)) {
         let json = fs.readFileSync(RequestFname)
         let meta = parseJson(json)
@@ -44,32 +46,42 @@ router.post('/', (req, res, next) => {
     fs.writeFileSync(RequestFname, JSON.stringify(req.body, null, 2))
     let meta = parseJson(req.body)
     if (meta.EventType === EVENTTYPE_COMMIT) {
-        let domain = meta.domain.replace('/','.')
+        let domain = meta.domain.replace('/', '.')
         console.log('COMMIT received')
         try {
-        let proc = spawn(process.cwd() + '/' + domain + '.sh',[], {
-            detached: true,
-            stdio: 'ignore'
-        }).unref()
-        // proc.stdout.on('data', (data) => {
-        // 	console.log(data.toString())
-        // })
-        // proc.stderr.on('data', (data) => {
-        // 	console.log('ERROR: ' + data.toString())
-        // })
-        // proc.on('close', (code) => {
-        // 	console.log('Exited with code ' + code)
+            let filename = domain + '.commit.sh'
+            let ScriptFname = process.cwd() + '/' + filename
+            if (fs.existsSync(ScriptFname)) {
+                let proc = spawn(ScriptFname, [], {
+                    detached: true,
+                    stdio: 'ignore'
+                }).unref()
+                res.send({
+                    status: 'OK',
+                    message: 'COMMIT: ' + filename + ' executed'
+                })
+            } else {
+                res.send({
+                    status: 'WARNING',
+                    message: 'COMMIT: ' + filename + ' not found'
+                })
+                console.log('Unable to find %s', ScriptFname)
+            }
+            // proc.stdout.on('data', (data) => {
+            // 	console.log(data.toString())
+            // })
+            // proc.stderr.on('data', (data) => {
+            // 	console.log('ERROR: ' + data.toString())
+            // })
+            // proc.on('close', (code) => {
+            // 	console.log('Exited with code ' + code)
 
-        // })
-        // proc.on('error', (err) => {
-        // 	console.log('SPAWN EXCEPTION')
-        // 	console.log(process.cwd())
-        // 	console.log(err)
-        // })
-        res.send({
-            status:'OK',
-            message: 'COMMIT received'
-        })
+            // })
+            // proc.on('error', (err) => {
+            // 	console.log('SPAWN EXCEPTION')
+            // 	console.log(process.cwd())
+            // 	console.log(err)
+            // })
         } catch (err) {
             console.log('EXCEPTION')
             console.log(err)
@@ -81,5 +93,5 @@ router.post('/', (req, res, next) => {
     }
     next()
 })
-    
+
 module.exports = router
