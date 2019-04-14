@@ -1,4 +1,5 @@
-const {spawn} = require('child_process'),
+const fs = require('fs'),
+	{spawn} = require('child_process'),
 	process = require('process'),
 	restify = require('restify')
 
@@ -12,12 +13,13 @@ server.use(restify.plugins.bodyParser())
 server.get('/', (req, res, next) => {
 	console.log ('GET /')
 	res.header('content-type','text/plain')
-	res.send(JSON.stringify(LastPost,null,2))
+	res.send(fs.readFileSync('hookrequest.json'))
 	next()
 })
 
 server.post('/', (req, res, next) => {
 	console.log(req.body)
+	fs.writeFileSync('hookrequest.json', JSON.stringify(req.body, null, 2))
 	LastPost = req.body
 	if (req.body.commits) {
 		console.log('COMMIT received')
