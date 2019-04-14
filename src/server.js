@@ -36,11 +36,11 @@ server.post('/', (req, res, next) => {
 		// 	console.log('Exited with code ' + code)
 
 		// })
-		proc.on('error', (err) => {
-			console.log('SPAWN EXCEPTION')
-			console.log(process.cwd())
-			console.log(err)
-		})
+		// proc.on('error', (err) => {
+		// 	console.log('SPAWN EXCEPTION')
+		// 	console.log(process.cwd())
+		// 	console.log(err)
+		// })
 		res.send({
 			status:'OK',
 			message: 'COMMIT received'
