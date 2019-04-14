@@ -12,9 +12,8 @@ const EVENTTYPE_COMMIT = 'commit'
 const RequestFname = path.resolve('../data', 'hookrequest.json')
 console.log('RequestFname: %s', RequestFname)
 
-function parseJson(json) {
-    let js = JSON.parse(json),
-        ret = {}
+function parseJson(js) {
+    let ret = {}
     if (js['head_commit']) {
         ret.EventType = EVENTTYPE_COMMIT
         if (js['head_commit'].url) {
@@ -33,7 +32,7 @@ router.get('/', (req, res, next) => {
     res.header('content-type', 'text/plain')
     if (fs.existsSync(RequestFname)) {
         let json = fs.readFileSync(RequestFname)
-        let meta = parseJson(json)
+        let meta = parseJson(JSON.parse(json))
         res.send(JSON.stringify(meta, null, 2) + '\n' + json)
     } else {
         res.send('')
