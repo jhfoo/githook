@@ -1,25 +1,33 @@
 const fs = require('fs'),
+	path = require('path'),
 	{spawn} = require('child_process'),
 	process = require('process'),
 	restify = require('restify')
 
-const server = restify.createServer({
+const RequestFname = path.resolve('../data','hookrequest.json'),
+	server = restify.createServer({
 })
 
-var LastPost = '';
+console.log('RequestFname: %s', RequestFname)
+
+// auto create data folder
+if (!fs.existsSync('../data')) {
+	fs.mkdirSync('../data')
+}
+
 
 server.use(restify.plugins.bodyParser())
 
 server.get('/', (req, res, next) => {
 	console.log ('GET /')
 	res.header('content-type','text/plain')
-	res.send(fs.readFileSync('hookrequest.json'))
+	res.send(fs.readFileSync(RequestFname))
 	next()
 })
 
 server.post('/', (req, res, next) => {
 	console.log(req.body)
-	fs.writeFileSync('hookrequest.json', JSON.stringify(req.body, null, 2))
+	fs.writeFileSync(RequestFname, JSON.stringify(req.body, null, 2))
 	LastPost = req.body
 	if (req.body.commits) {
 		console.log('COMMIT received')
