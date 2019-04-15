@@ -5,11 +5,12 @@ const fs = require('fs'),
     } = require('child_process'),
     process = require('process'),
     Router = require('restify-router').Router,
-    router = new Router()
+    router = new Router(),
+    Config = require('./config')
 
 const EVENTTYPE_COMMIT = 'commit'
 
-const RequestFname = path.resolve('../data', 'hookrequest.json')
+const RequestFname = path.resolve(Config.path.data, '../data', 'hookrequest.json')
 console.log('RequestFname: %s', RequestFname)
 
 function parseJson(js) {

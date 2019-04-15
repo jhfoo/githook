@@ -1,16 +1,22 @@
 const fs = require('fs'),
+	path = require('path'),
+	process = require('process'),
 	restify = require('restify'),
 	router = require('./route'),
 	Config = require('./config')
 
-let server = restify.createServer({
-})
-
-// auto create data folder
-if (!fs.existsSync('../data')) {
-	fs.mkdirSync('../data')
+function autoCreateDataFolder() {
+	// auto create data folder
+	let fullpath = path.resolve(process.cwd(), Config.path.data)
+	if (!fs.existsSync(fullpath)) {
+		fs.mkdirSync(fullpath)
+	}
 }
 
+autoCreateDataFolder()
+
+let server = restify.createServer({
+})
 
 server.use(restify.plugins.bodyParser())
 
