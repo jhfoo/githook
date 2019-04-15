@@ -45,11 +45,11 @@ router.post('/', (req, res, next) => {
     fs.writeFileSync(RequestFname, JSON.stringify(req.body, null, 2))
     let meta = parseJson(req.body)
     if (meta.EventType === EVENTTYPE_COMMIT) {
-        let domain = meta.domain.replace('/', '.')
         console.log('COMMIT received')
         try {
+            let domain = meta.domain.replace('/', '.')
             let filename = domain + '.commit.sh'
-            let ScriptFname = process.cwd() + '/' + filename
+            let ScriptFname = path.resolve(process.cwd() + '/../bin/' + filename)
             if (fs.existsSync(ScriptFname)) {
                 let proc = spawn(ScriptFname, [], {
                     detached: true,
