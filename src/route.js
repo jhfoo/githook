@@ -4,6 +4,8 @@ const fs = require('fs'),
         spawn
     } = require('child_process'),
     process = require('process'),
+    log4js = require('log4js'),
+    logger = log4js.getLogger(),
     Router = require('restify-router').Router,
     router = new Router(),
     Config = require('./config')
@@ -11,7 +13,7 @@ const fs = require('fs'),
 const EVENTTYPE_COMMIT = 'commit'
 
 const RequestFname = path.resolve(Config.path.data, '../data', 'hookrequest.json')
-console.log('RequestFname: %s', RequestFname)
+logger.debug('RequestFname: %s', RequestFname)
 
 function parseJson(js) {
     let ret = {}
@@ -22,14 +24,14 @@ function parseJson(js) {
             if (match) {
                 ret.domain = match[1]
             }
-            console.log(ret.domain)
+            logger.debug(ret.domain)
         }
     }
     return ret
 }
 
 router.get('/', (req, res, next) => {
-    console.log('GET /')
+    logger.debug('GET /')
     res.header('content-type', 'text/plain')
     if (fs.existsSync(RequestFname)) {
         let json = fs.readFileSync(RequestFname)
@@ -42,11 +44,11 @@ router.get('/', (req, res, next) => {
 })
 
 router.post('/', (req, res, next) => {
-    console.log(req.body)
+    logger.debug(req.body)
     fs.writeFileSync(RequestFname, JSON.stringify(req.body, null, 2))
     let meta = parseJson(req.body)
     if (meta.EventType === EVENTTYPE_COMMIT) {
-        console.log('COMMIT received')
+        logger.debug('COMMIT received')
         try {
             let domain = meta.domain.replace('/', '.')
             let filename = domain + '.commit.sh'
@@ -65,7 +67,7 @@ router.post('/', (req, res, next) => {
                     status: 'WARNING',
                     message: 'COMMIT: ' + filename + ' not found'
                 })
-                console.log('Unable to find %s', ScriptFname)
+                logger.warning('Unable to find %s', ScriptFname)
             }
             // proc.stdout.on('data', (data) => {
             // 	console.log(data.toString())
@@ -83,8 +85,8 @@ router.post('/', (req, res, next) => {
             // 	console.log(err)
             // })
         } catch (err) {
-            console.log('EXCEPTION')
-            console.log(err)
+            logger.error('EXCEPTION')
+            logger.error(err)
         }
     } else {
         res.send({

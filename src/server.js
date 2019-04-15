@@ -1,9 +1,14 @@
 const fs = require('fs'),
 	path = require('path'),
 	process = require('process'),
-	restify = require('restify'),
-	router = require('./route'),
+	log4js = require('log4js'),
+	logger = log4js.getLogger(),
 	Config = require('./config')
+
+logger.level = Config.log4js.level
+
+const restify = require('restify'),
+	router = require('./route')
 
 function autoCreateDataFolder() {
 	// auto create data folder
@@ -22,6 +27,6 @@ server.use(restify.plugins.bodyParser())
 
 router.applyRoutes(server)
 server.listen(Config.service.port, () => {
-	console.log('%s listening at %s', server.name, server.url)
+	logger.info('%s listening at %s', server.name, server.url)
 })
 

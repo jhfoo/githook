@@ -4,5 +4,8 @@ module.exports = {
     },
     path: {
         data: '../data'
+    },
+    log4js: {
+        level: 'debug'
     }
 }
