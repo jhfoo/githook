@@ -1,6 +1,7 @@
 const fs = require('fs'),
 	restify = require('restify'),
-	router = require('./route')
+	router = require('./route'),
+	Config = require('./config')
 
 let server = restify.createServer({
 })
@@ -14,7 +15,7 @@ if (!fs.existsSync('../data')) {
 server.use(restify.plugins.bodyParser())
 
 router.applyRoutes(server)
-server.listen(8080, () => {
+server.listen(Config.service.port, () => {
 	console.log('%s listening at %s', server.name, server.url)
 })
 
