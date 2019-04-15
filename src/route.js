@@ -50,7 +50,7 @@ router.post('/', (req, res, next) => {
         try {
             let domain = meta.domain.replace('/', '.')
             let filename = domain + '.commit.sh'
-            let ScriptFname = path.resolve(process.cwd() + '/../bin/' + filename)
+            let ScriptFname = path.resolve(process.cwd() + '/bin/' + filename)
             if (fs.existsSync(ScriptFname)) {
                 let proc = spawn(ScriptFname, [], {
                     detached: true,
