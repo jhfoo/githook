@@ -18,7 +18,7 @@ module.exports = {
             'pre-deploy-local': '',
             'post-deploy': 'npm install && pm2 startOrRestart ecosystem.config.js --env production && chmod +x ./bin/*.sh',
             env: {
-                NODE_ENV: 'production'
+                NODE_ENV: 'productioon'
             }
         }
     }

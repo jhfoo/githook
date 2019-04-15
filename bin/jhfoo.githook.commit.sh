@@ -1,4 +1,4 @@
 #!/usr/local/bin/bash
 
-cd ..
+#cd ..
 pm2 deploy production --force
