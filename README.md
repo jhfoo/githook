@@ -10,3 +10,10 @@ Nodejs-based Lightweight webhook receiver for Git updates
 ## Roadmap
 1. Ignore filters: not all files (eg. *.MD) need an update
 2. Log to file
+
+## FAQ
+**What is the current useability status?**
+Use at own risk. Pretty much alpha-ware.
+
+**Why are you doing this?**
+I just need a simple CD mechanism. Plus: because it's fun!
